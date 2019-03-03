@@ -21,7 +21,7 @@ public class ShortDate implements Serializable, Comparable<ShortDate> {
 
     @Override
     public int compareTo(ShortDate o) {
-        return 0;
+        return intValue - o.intValue;
     }
 
     public int getIntValue() {

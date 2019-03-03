@@ -39,7 +39,7 @@ public class ResourceConfig {
         }
     }
 
-    static InputStream streamOf(String name) {
+    public static InputStream streamOf(String name) {
         return Thread.currentThread().getContextClassLoader().getResourceAsStream(name);
     }
 

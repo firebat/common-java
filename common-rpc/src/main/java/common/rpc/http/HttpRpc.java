@@ -6,9 +6,9 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import common.api.json.CodeMessage;
 import common.api.json.Json;
+import common.exception.ServiceException;
 import common.json.JsonMapper;
 import common.json.MapperBuilder;
-import common.exception.ServiceException;
 import common.rpc.url.AuthUrl;
 import okhttp3.*;
 import org.slf4j.Logger;
@@ -72,12 +72,13 @@ public class HttpRpc {
 
     public <T> T parse(Response response, TypeReference<T> type) {
 
-        if (!response.isSuccessful()) {
-            logger.error("status={}, message={}", response.code(), response.message());
-            throw new ServiceException(response.code(), response.message());
-        }
-
         try {
+            if (!response.isSuccessful()) {
+                String body = response.body().string();
+                logger.error("status={}, body={}", response.code(), body);
+                throw new ServiceException(response.code(), body);
+            }
+
             return mapper.readValue(response.body().charStream(), type);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -92,19 +93,19 @@ public class HttpRpc {
         throw new ServiceException(json.code, json.message);
     }
 
+    public <T> T getObject(String uri, TypeReference<T> type, String... args) {
+        return parse(execute(createRequest(config.getUrl(), uri, args).get().build()), type);
+    }
+
+    public <T> T postObject(String uri, TypeReference<T> type, RequestBody requestBody) {
+        return parse(execute(createRequest(config.getUrl(), uri).post(requestBody).build()), type);
+    }
+
     public <T> T get(String uri, TypeReference<Json<T>> type, String... args) {
-        return returnOrException(parse(execute(createRequest(config.getUrl(), uri, args).get().build()), type));
+        return returnOrException(getObject(uri, type, args));
     }
 
     public <T> T post(String uri, TypeReference<Json<T>> type, RequestBody requestBody) {
-        return returnOrException(parse(execute(createRequest(config.getUrl(), uri).post(requestBody).build()), type));
-    }
-
-    public OkHttpClient getClient() {
-        return client;
-    }
-
-    public HttpEndpoint getConfig() {
-        return config;
+        return returnOrException(postObject(uri, type, requestBody));
     }
 }

@@ -12,14 +12,13 @@ public class HttpEndpoint extends ClientConfig {
     @NestedConfigurationProperty
     private ProxyConfig proxy = new ProxyConfig();
 
+    private String url;
+
     // 访问认证(可选)
     private String key;
     private String secret;
     private int timeout = 10;
     private boolean duplicate = false;
-
-    // 域名
-    private String url;
 
     public ProxyConfig getProxy() {
         return proxy;
@@ -27,6 +26,14 @@ public class HttpEndpoint extends ClientConfig {
 
     public void setProxy(ProxyConfig proxy) {
         this.proxy = proxy;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public String getKey() {
@@ -43,14 +50,6 @@ public class HttpEndpoint extends ClientConfig {
 
     public void setSecret(String secret) {
         this.secret = secret;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
     }
 
     public int getTimeout() {

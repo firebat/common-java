@@ -1,30 +1,18 @@
 package common.rpc.client;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import common.api.json.Json;
 import common.config.ProxyConfig;
-import common.json.JsonMapper;
-import common.json.MapperBuilder;
 import common.rpc.autoconfigure.RestProperties;
 import common.rpc.http.HttpEndpoint;
 import common.rpc.http.HttpRpc;
 import okhttp3.Dns;
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.UnknownHostException;
-import java.security.SecureRandom;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -32,21 +20,9 @@ import java.util.stream.Collectors;
 
 public abstract class RestClient {
 
-    protected static final JsonMapper mapper = MapperBuilder.getDefaultMapper();
-
-    public static final MediaType MEDIA_OF_JSON = MediaType.parse("application/json");
-    public static final TypeReference<Map<String, Object>> MAP_TYPE = new TypeReference<Map<String, Object>>() {
-    };
-
-    public static final TypeReference<Json<Object>> OBJECT_JSON = new TypeReference<Json<Object>>() {
-    };
-    public static final TypeReference<Json<Integer>> INT_JSON = new TypeReference<Json<Integer>>() {
-    };
-
-    @Resource
     private RestProperties properties;
-    private HttpRpc service;
     private final String name;
+    private HttpRpc service;
 
     public RestClient(String name) {
         this.name = name;
@@ -55,13 +31,16 @@ public abstract class RestClient {
     @PostConstruct
     public void init() {
         HttpEndpoint point = properties.getService().get(name);
-        OkHttpClient.Builder builder = createClient(point);
-        this.service = new HttpRpc(point, builder.build());
+        this.service = new HttpRpc(point, createClient(point).build());
     }
 
     protected OkHttpClient.Builder createClient(HttpEndpoint point) {
 
-        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        final OkHttpClient.Builder builder = new OkHttpClient.Builder()
+                .readTimeout(point.getReadTimeout(), TimeUnit.SECONDS)
+                .connectTimeout(point.getConnectTimeout(), TimeUnit.SECONDS)
+                .writeTimeout(point.getWriteTimeout(), TimeUnit.SECONDS);
+
         if (!properties.getDns().isEmpty()) {
             setDns(builder, properties.getDns());
         }
@@ -71,46 +50,7 @@ public abstract class RestClient {
             builder.proxy(new Proxy(proxy.getType(), new InetSocketAddress(proxy.getHost(), proxy.getPort())));
         }
 
-        if (point.getUrl().startsWith("https://")) {
-            // TODO load cert
-            final X509TrustManager trustManager = createTrustManager();
-            builder.sslSocketFactory(createSSLSocketFactory(trustManager), trustManager)
-                    .hostnameVerifier((s, session) -> true);
-        }
-
-        return builder.readTimeout(point.getReadTimeout(), TimeUnit.SECONDS)
-                .connectTimeout(point.getConnectTimeout(), TimeUnit.SECONDS)
-                .writeTimeout(point.getWriteTimeout(), TimeUnit.SECONDS);
-    }
-
-    protected X509TrustManager createTrustManager() {
-        return new X509TrustManager() {
-            @Override
-            public void checkClientTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
-
-            }
-
-            @Override
-            public void checkServerTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
-
-            }
-
-            @Override
-            public X509Certificate[] getAcceptedIssuers() {
-                return new X509Certificate[0];
-            }
-        };
-    }
-
-    protected SSLSocketFactory createSSLSocketFactory(TrustManager trustManager) {
-        try {
-            SSLContext sc = SSLContext.getInstance("TLS");
-            sc.init(null, new TrustManager[]{trustManager}, new SecureRandom());
-            return sc.getSocketFactory();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+        return builder;
     }
 
     protected void setDns(OkHttpClient.Builder builder, Map<String, List<String>> dns) {
@@ -143,5 +83,10 @@ public abstract class RestClient {
 
     public RestProperties getProperties() {
         return properties;
+    }
+
+    @Resource
+    public void setProperties(RestProperties properties) {
+        this.properties = properties;
     }
 }
