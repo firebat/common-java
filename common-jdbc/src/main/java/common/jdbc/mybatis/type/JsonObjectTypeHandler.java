@@ -23,7 +23,7 @@ public class JsonObjectTypeHandler extends BaseTypeHandler<Object> {
 
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i, Object parameter, JdbcType jdbcType) throws SQLException {
-        ps.setString(i, mapper.writeValueAsString(parameter));
+        ps.setString(i, parameter == null ? null : mapper.writeValueAsString(parameter));
     }
 
     @Override
