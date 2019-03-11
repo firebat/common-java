@@ -16,6 +16,7 @@
         <module>common-jdbc</module>
         <module>common-lang</module>
         <module>common-rpc</module>
+        <module>common-security</module>
         <module>common-web</module>
     </modules>
 
@@ -56,6 +57,11 @@
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>common-rpc</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>common-security</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -123,6 +129,12 @@
                 <groupId>org.yaml</groupId>
                 <artifactId>snakeyaml</artifactId>
                 <version>1.23</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt</artifactId>
+                <version>0.9.1</version>
             </dependency>
 
             <dependency>
