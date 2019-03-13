@@ -1,14 +1,16 @@
 package common.rpc.client;
 
+import com.google.common.base.Strings;
 import common.config.ProxyConfig;
 import common.rpc.autoconfigure.RestProperties;
 import common.rpc.http.HttpEndpoint;
 import common.rpc.http.HttpRpc;
-import okhttp3.Dns;
-import okhttp3.OkHttpClient;
+import okhttp3.*;
 
+import javax.annotation.Nullable;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -48,6 +50,17 @@ public abstract class RestClient {
         ProxyConfig proxy = point.getProxy();
         if (proxy.getType() != Proxy.Type.DIRECT) {
             builder.proxy(new Proxy(proxy.getType(), new InetSocketAddress(proxy.getHost(), proxy.getPort())));
+
+            if (!Strings.isNullOrEmpty(proxy.getUsername())) {
+                builder.proxyAuthenticator(new Authenticator() {
+                    @Nullable
+                    @Override
+                    public Request authenticate(@Nullable Route route, Response response) throws IOException {
+                        String credential = Credentials.basic(proxy.getUsername(), proxy.getPassword());
+                        return response.request().newBuilder().header("Proxy-Authorization", credential).build();
+                    }
+                });
+            }
         }
 
         return builder;
