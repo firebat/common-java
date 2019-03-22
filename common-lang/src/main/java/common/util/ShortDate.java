@@ -1,7 +1,7 @@
 package common.util;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -12,43 +12,49 @@ import java.util.Date;
 public class ShortDate implements Serializable, Comparable<ShortDate> {
 
     // yyyyMMdd
-    private final int intValue;
+    private final int value;
 
     @JsonCreator
-    public ShortDate(@JsonProperty("intValue") int intValue) {
-        this.intValue = intValue;
+    public ShortDate(int value) {
+        this.value = value;
+    }
+
+    @JsonCreator
+    public ShortDate(String value) {
+        this(Integer.valueOf(value));
     }
 
     @Override
     public int compareTo(ShortDate o) {
-        return intValue - o.intValue;
+        return value - o.value;
     }
 
-    public int getIntValue() {
-        return intValue;
+    @JsonValue
+    public int getValue() {
+        return value;
     }
 
     @Override
     public int hashCode() {
-        return intValue;
+        return value;
     }
 
     @Override
     public boolean equals(Object obj) {
-        return (obj instanceof ShortDate) && ((ShortDate) obj).intValue == intValue;
+        return (obj instanceof ShortDate) && ((ShortDate) obj).value == value;
     }
 
     @Override
     public String toString() {
-        return (intValue / 10000) + "-" + fillZero(intValue / 100 % 100) + "-" + fillZero(intValue % 100);
+        return (value / 10000) + "-" + fillZero(value / 100 % 100) + "-" + fillZero(value % 100);
     }
 
     public boolean after(ShortDate date) {
-        return intValue > date.intValue;
+        return value > date.value;
     }
 
     public boolean before(ShortDate date) {
-        return intValue < date.intValue;
+        return value < date.value;
     }
 
     public static ShortDate of(Date date) {

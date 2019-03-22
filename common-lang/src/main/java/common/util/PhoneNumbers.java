@@ -13,7 +13,7 @@ public class PhoneNumbers {
      * 获取号码所属的国家/地区
      * 例如国家码同样是+1，如果后续regioncode是514的，那么regioncode不是US，而是CA
      * 如果regioncode不存在，返回"ZZ"
-     * <br/><b>该方法未做号码的合法性检查</b>
+     * <b>该方法未做号码的合法性检查</b>
      *
      * @param phone 必须是包含国家码的号码，如8615298765432
      * @return
@@ -31,7 +31,7 @@ public class PhoneNumbers {
      * 获取号码所属的国家/地区
      * 例如国家码同样是+1，如果后续regioncode是514的，那么regioncode不是US，而是CA
      * 如果regioncode不存在，返回null
-     * <br/><b>该方法未做号码的合法性检查</b>
+     * <b>该方法未做号码的合法性检查</b>
      * 如果是'001'返回null
      */
     public static String getRegionCode(Phonenumber.PhoneNumber number) {

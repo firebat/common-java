@@ -13,7 +13,7 @@ public class ShortDateTypeHandler extends BaseTypeHandler<ShortDate> {
 
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i, ShortDate parameter, JdbcType jdbcType) throws SQLException {
-        ps.setInt(i, parameter.getIntValue());
+        ps.setInt(i, parameter.getValue());
     }
 
     @Override
