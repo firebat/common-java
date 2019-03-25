@@ -1,16 +1,19 @@
 package common.lang;
 
-import java.util.Arrays;
+import com.google.common.collect.Maps;
+
 import java.util.Collections;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public interface TextEnum {
 
     String text();
 
     static <T extends TextEnum> Map<T, String> toMap(T[] values) {
-        return Collections.unmodifiableMap(Arrays.stream(values).collect(Collectors.toMap(Function.identity(), TextEnum::text)));
+        Map map = Maps.newLinkedHashMapWithExpectedSize(values.length);
+        for (T value : values) {
+            map.put(value, value.text());
+        }
+        return Collections.unmodifiableMap(map);
     }
 }
