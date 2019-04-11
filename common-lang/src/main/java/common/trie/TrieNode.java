@@ -13,7 +13,9 @@ public abstract class TrieNode<K, V> {
     private void set(String path, int level, V data) {
 
         if (path.length() <= level) {
-            item = createItem(path);
+            if (item == null) {
+                item = createItem(path);
+            }
             item.setData(data);
             return;
         }
