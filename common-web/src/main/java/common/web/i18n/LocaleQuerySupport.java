@@ -30,11 +30,12 @@ public abstract class LocaleQuerySupport implements LocaleSupport {
         HttpServletRequest request = getRequest();
 
         // 服务器设置
-        return request == null ? Locale.getDefault() : request.getLocale();
+        return request == null ? null : request.getLocale();
     }
 
     protected String getLanguage() {
-        return getLocale().getLanguage();
+        Locale locale = getLocale();
+        return locale == null ? null : locale.getLanguage();
     }
 
     protected GenericQuery createQuery() {
