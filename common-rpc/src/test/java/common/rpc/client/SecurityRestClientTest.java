@@ -1,8 +1,8 @@
 package common.rpc.client;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import common.rpc.autoconfigure.RestProperties;
-import common.rpc.http.HttpEndpoint;
+import common.rpc.autoconfigure.RpcProperties;
+import common.rpc.http.Endpoint;
 import junit.framework.TestCase;
 import org.junit.Test;
 
@@ -34,10 +34,10 @@ public class SecurityRestClientTest extends TestCase {
     @Test
     public void testAll() {
 
-        HttpEndpoint endpoint = new HttpEndpoint();
+        Endpoint endpoint = new Endpoint();
         endpoint.setUrl("https://samples.openweathermap.org");
 
-        RestProperties properties = new RestProperties();
+        RpcProperties properties = new RpcProperties();
         properties.getService().put("open-weather", endpoint);
 
         OpenWeather weather = new OpenWeather();

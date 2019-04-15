@@ -1,6 +1,6 @@
 package common.rpc.client;
 
-import common.rpc.http.HttpEndpoint;
+import common.rpc.http.Endpoint;
 import okhttp3.OkHttpClient;
 
 import javax.net.ssl.*;
@@ -40,7 +40,7 @@ public abstract class SecurityRestClient extends RestClient {
     }
 
     @Override
-    protected OkHttpClient.Builder createClient(HttpEndpoint point) {
+    protected OkHttpClient.Builder createClient(Endpoint point) {
 
         OkHttpClient.Builder builder = super.createClient(point);
 

@@ -23,16 +23,16 @@ public class HttpRpc {
 
     private final Logger logger = LoggerFactory.getLogger(HttpRpc.class);
 
-    private final HttpEndpoint config;
+    private final Endpoint config;
     private final OkHttpClient client;
     private final JsonMapper mapper;
     private final Function<HttpUrl, Request.Builder> requestFunc;
 
-    public HttpRpc(HttpEndpoint config, OkHttpClient client) {
+    public HttpRpc(Endpoint config, OkHttpClient client) {
         this(config, client, MapperBuilder.getDefaultMapper());
     }
 
-    public HttpRpc(HttpEndpoint config, OkHttpClient client, JsonMapper mapper) {
+    public HttpRpc(Endpoint config, OkHttpClient client, JsonMapper mapper) {
         this.config = config;
         this.client = client;
         this.mapper = mapper;

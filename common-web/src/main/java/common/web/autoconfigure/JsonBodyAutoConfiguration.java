@@ -1,4 +1,4 @@
-package common.web.autoconfiguration;
+package common.web.autoconfigure;
 
 import common.web.spring.handler.JsonBodyExceptionResolver;
 import common.web.spring.handler.JsonBodyMethodProcessor;

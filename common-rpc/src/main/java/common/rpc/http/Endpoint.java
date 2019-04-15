@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 /**
  * 连接点配置
  */
-public class HttpEndpoint extends ClientConfig {
+public class Endpoint extends ClientConfig {
 
     @NestedConfigurationProperty
     private ProxyConfig proxy = new ProxyConfig();

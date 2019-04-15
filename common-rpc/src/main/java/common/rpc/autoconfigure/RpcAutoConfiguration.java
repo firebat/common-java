@@ -7,11 +7,11 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @EnableConfigurationProperties
-public class RestAutoConfiguration {
+public class RpcAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public RestProperties restProperties() {
-        return new RestProperties();
+    public RpcProperties rpcProperties() {
+        return new RpcProperties();
     }
 }

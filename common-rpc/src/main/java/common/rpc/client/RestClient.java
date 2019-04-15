@@ -2,8 +2,8 @@ package common.rpc.client;
 
 import com.google.common.base.Strings;
 import common.config.ProxyConfig;
-import common.rpc.autoconfigure.RestProperties;
-import common.rpc.http.HttpEndpoint;
+import common.rpc.autoconfigure.RpcProperties;
+import common.rpc.http.Endpoint;
 import common.rpc.http.HttpRpc;
 import okhttp3.*;
 
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 public abstract class RestClient {
 
-    private RestProperties properties;
+    private RpcProperties properties;
     private final String name;
     private HttpRpc service;
 
@@ -32,11 +32,11 @@ public abstract class RestClient {
 
     @PostConstruct
     public void init() {
-        HttpEndpoint point = properties.getService().get(name);
+        Endpoint point = properties.getService().get(name);
         this.service = new HttpRpc(point, createClient(point).build());
     }
 
-    protected OkHttpClient.Builder createClient(HttpEndpoint point) {
+    protected OkHttpClient.Builder createClient(Endpoint point) {
 
         final OkHttpClient.Builder builder = new OkHttpClient.Builder()
                 .readTimeout(point.getReadTimeout(), TimeUnit.SECONDS)
@@ -94,12 +94,12 @@ public abstract class RestClient {
         return service;
     }
 
-    public RestProperties getProperties() {
+    public RpcProperties getProperties() {
         return properties;
     }
 
     @Resource
-    public void setProperties(RestProperties properties) {
+    public void setProperties(RpcProperties properties) {
         this.properties = properties;
     }
 }

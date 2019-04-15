@@ -1,4 +1,4 @@
-package common.management.health;
+package common.web.servlet;
 
 import common.management.ServerManager;
 
