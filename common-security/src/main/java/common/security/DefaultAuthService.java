@@ -16,7 +16,7 @@ public class DefaultAuthService implements AuthService {
 
     private final Logger log = LoggerFactory.getLogger(AuthService.class);
 
-    private JwtConfig config;
+    protected JwtConfig config;
 
     @Override
     public String generateToken(UserDetails details) {
