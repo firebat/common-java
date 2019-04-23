@@ -33,6 +33,10 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
         String authorization = request.getHeader(config.getTokenHeader());
 
+        if (logger.isDebugEnabled()) {
+            logger.debug("authorization=" + authorization);
+        }
+
         if (authorization != null && authorization.startsWith(config.getTokenHead())) {
 
             // https://tools.ietf.org/html/rfc6750
