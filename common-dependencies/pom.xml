@@ -14,7 +14,9 @@
         <guava.version>23.0</guava.version>
         <okhttp.version>3.12.0</okhttp.version>
         <mybatis.version>3.4.6</mybatis.version>
+        <influxdb.version>2.8</influxdb.version>
         <org.slf4j.version>1.7.25</org.slf4j.version>
+        <libphonenumber.version>8.10.1</libphonenumber.version>
         <com.fasterxml.jackson.version>2.9.8</com.fasterxml.jackson.version>
         <junit.version>4.12</junit.version>
         <common.version>${project.version}</common.version>
@@ -72,7 +74,7 @@
             <dependency>
                 <groupId>com.googlecode.libphonenumber</groupId>
                 <artifactId>libphonenumber</artifactId>
-                <version>8.10.1</version>
+                <version>${libphonenumber.version}</version>
             </dependency>
 
             <dependency>
@@ -102,7 +104,7 @@
             <dependency>
                 <groupId>org.influxdb</groupId>
                 <artifactId>influxdb-java</artifactId>
-                <version>2.8</version>
+                <version>${influxdb.version}</version>
             </dependency>
 
             <dependency>
