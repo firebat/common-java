@@ -1,13 +1,14 @@
-## Example
+## Usage
 
-    class SecurityConfig extends WebSecurityConfigurerAdapter {
+    class AppSecurityConfig extends WebSecurityConfigurerAdapter {
         
         @Resource UserDetailsService userDetailsService; 
         @Resource AuthService authService;
         
-        @Bean JwtConfig jwtConfig() {
-            // token超时设置等  
-            return new JwtConfig();
+        @Bean SecurityConfig securityConfig() {
+            SecurityConfig config = new SecurityConfig();
+            // config.setSignature("xxxx");
+            return config;
         }
         
         @Bean
@@ -15,8 +16,8 @@
             return new BCryptPasswordEncoder();
         }
 
-        @Bean JwtAuthenticationTokenFilter authenticationTokenFilter() {
-            return new JwtAuthenticationTokenFilter(jwtConfig(), userDetailsService, authService);
+        @Bean JwtAuthorizationTokenFilter authorizationTokenFilter() {
+            return new JwtAuthorizationTokenFilter(securityConfig(), userDetailsService, authService);
         }
 
         protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -30,7 +31,7 @@
                     .and().authorizeRequests()
 
                     .anyRequest().authenticated()
-                    .and().addFilterBefore(authenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+                    .and().addFilterBefore(authorizationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
         }
     }

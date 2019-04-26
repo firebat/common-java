@@ -1,8 +1,19 @@
 ### 部署到仓库
 
-    mvn deploy \
-     -Dreleases.repo=http://<nexus-server>/nexus/content/repositories/releases \
-     -Dsnapshots.repo=http://<nexus-server>/nexus/content/repositories/snapshots
+    # deploy to your repository
+    mvn source:jar deploy \
+     -Dreleases.repo=http://<your-nexus-server>/nexus/content/repositories/releases \
+     -Dsnapshots.repo=http://<your-nexus-server>/nexus/content/repositories/snapshots
+
+
+    # add dependencies to your pom.xml
+    <dependency>
+        <groupId>common</groupId>
+        <artifactId>common-dependencies</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <type>pom</type>
+        <scope>import</scope>
+    </dependency>
 
 ### common-api
 - 接口定义
@@ -13,7 +24,8 @@
 - health check
 
 ### common-jdbc
-数据访问支持包
+- 多数据源切换
+- Mybatis支持包
 
 ### common-lang
 - 编解码处理
@@ -24,8 +36,13 @@
 - 精简日期
 
 ### common-rpc
-- Rest接口访问
+- Rpc配置化
+- Rest便捷封装 (http / https)
+
+### common-security
+- Authorization Token访问
 
 ### common-web
-- 接口标准化
+- @JsonBody 接口标准化
+- 服务器探针
 - i18n支持
