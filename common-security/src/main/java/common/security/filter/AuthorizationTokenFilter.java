@@ -1,6 +1,7 @@
-package common.security.jwt;
+package common.security.filter;
 
 import common.security.AuthService;
+import common.security.config.SecurityConfig;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,15 +15,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
+public class AuthorizationTokenFilter extends OncePerRequestFilter {
 
-    private JwtConfig config;
+    private SecurityConfig config;
 
     private UserDetailsService userDetailsService;
 
     private AuthService authService;
 
-    public JwtAuthenticationTokenFilter(JwtConfig config, UserDetailsService userDetailsService, AuthService authService) {
+    public AuthorizationTokenFilter(SecurityConfig config, UserDetailsService userDetailsService, AuthService authService) {
         this.config = config;
         this.userDetailsService = userDetailsService;
         this.authService = authService;
@@ -42,7 +43,6 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             // https://tools.ietf.org/html/rfc6750
             final String token = authorization.substring(config.getTokenHead().length());
             final String username = authService.parseUsername(token);
-
 
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 

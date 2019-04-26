@@ -1,11 +1,13 @@
-package common.security.jwt;
+package common.security.config;
 
-public class JwtConfig {
+import java.util.concurrent.TimeUnit;
+
+public class SecurityConfig {
 
     private String tokenHeader = "Authorization";
     private String tokenHead = "Bearer ";
     private String signature = "";
-    private long expiration = 7 * 24 * 60 * 60 * 1000;
+    private long expiration = TimeUnit.MILLISECONDS.convert(7, TimeUnit.DAYS);
 
     public String getTokenHead() {
         return tokenHead;
