@@ -21,22 +21,20 @@ public class MapperBuilder {
         return new MapperBuilder();
     }
 
-    private Supplier<JsonMapper> supplier = Suppliers.memoize(() ->
-            new JsonMapper(new ObjectMapper()
-                    .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
-                    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+    private Supplier<JsonMapper> supplier = () -> new JsonMapper(new ObjectMapper()
+            .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 
-                    .configure(JsonParser.Feature.ALLOW_COMMENTS, true)
-                    .configure(JsonParser.Feature.ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER, true)
-                    .configure(JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS, true)
-                    .configure(JsonParser.Feature.ALLOW_NUMERIC_LEADING_ZEROS, true)
-                    .configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true)
-                    .configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true)
-                    .configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true)
+            .configure(JsonParser.Feature.ALLOW_COMMENTS, true)
+            .configure(JsonParser.Feature.ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER, true)
+            .configure(JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS, true)
+            .configure(JsonParser.Feature.ALLOW_NUMERIC_LEADING_ZEROS, true)
+            .configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true)
+            .configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true)
+            .configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true)
 
-                    .setSerializationInclusion(JsonInclude.Include.NON_NULL)
-                    .setSerializationInclusion(JsonInclude.Include.NON_EMPTY)
-            )
+            .setSerializationInclusion(JsonInclude.Include.NON_NULL)
+            .setSerializationInclusion(JsonInclude.Include.NON_EMPTY)
     );
 
     public JsonMapper build() {

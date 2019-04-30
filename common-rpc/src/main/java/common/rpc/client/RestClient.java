@@ -7,10 +7,8 @@ import common.rpc.http.Endpoint;
 import common.rpc.http.HttpRpc;
 import okhttp3.*;
 
-import javax.annotation.Nullable;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -20,7 +18,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-public abstract class RestClient {
+public abstract class RestClient implements RestShared {
 
     private RpcProperties properties;
     private final String name;
@@ -52,13 +50,9 @@ public abstract class RestClient {
             builder.proxy(new Proxy(proxy.getType(), new InetSocketAddress(proxy.getHost(), proxy.getPort())));
 
             if (!Strings.isNullOrEmpty(proxy.getUsername())) {
-                builder.proxyAuthenticator(new Authenticator() {
-                    @Nullable
-                    @Override
-                    public Request authenticate(@Nullable Route route, Response response) throws IOException {
-                        String credential = Credentials.basic(proxy.getUsername(), proxy.getPassword());
-                        return response.request().newBuilder().header("Proxy-Authorization", credential).build();
-                    }
+                builder.proxyAuthenticator((Route route, Response response) -> {
+                    String credential = Credentials.basic(proxy.getUsername(), proxy.getPassword());
+                    return response.request().newBuilder().header("Proxy-Authorization", credential).build();
                 });
             }
         }

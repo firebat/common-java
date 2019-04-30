@@ -70,6 +70,11 @@ public class HttpRpc {
         }
     }
 
+    public void enqueue(Request request, okhttp3.Callback callback) {
+        logger.debug("request={}", request);
+        client.newCall(request).enqueue(callback);
+    }
+
     public <T> T parse(Response response, TypeReference<T> type) {
 
         try {
@@ -93,6 +98,7 @@ public class HttpRpc {
         throw new ServiceException(json.code, json.message);
     }
 
+    // -------- 同步调用 ----------
     public <T> T getObject(String uri, TypeReference<T> type, String... args) {
         return parse(execute(createRequest(config.getUrl(), uri, args).get().build()), type);
     }
@@ -107,5 +113,55 @@ public class HttpRpc {
 
     public <T> T post(String uri, TypeReference<Json<T>> type, RequestBody requestBody) {
         return returnOrException(postObject(uri, type, requestBody));
+    }
+
+    // -------- 异步调用 ----------
+    public <T> void getObject(String uri, TypeReference<T> type, Callback<T> callback, String... args) {
+        enqueue(createRequest(config.getUrl(), uri, args).get().build(), createObjectCallback(type, callback));
+    }
+
+    public <T> void postObject(String uri, TypeReference<T> type, Callback<T> callback, RequestBody requestBody) {
+        enqueue(createRequest(config.getUrl(), uri).post(requestBody).build(), createObjectCallback(type, callback));
+    }
+
+    public <T> void get(String uri, TypeReference<Json<T>> type, Callback<T> callback, String... args) {
+        enqueue(createRequest(config.getUrl(), uri, args).get().build(), createCallback(type, callback));
+    }
+
+    public <T> void post(String uri, TypeReference<Json<T>> type, Callback<T> callback, RequestBody requestBody) {
+        enqueue(createRequest(config.getUrl(), uri).post(requestBody).build(), createCallback(type, callback));
+    }
+
+    private <T> okhttp3.Callback createObjectCallback(TypeReference<T> type, Callback<T> callback) {
+        return new okhttp3.Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callback.onFailure(call, e);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                callback.onResponse(call, parse(response, type));
+            }
+        };
+    }
+
+    private <T> okhttp3.Callback createCallback(TypeReference<Json<T>> type, Callback<T> callback) {
+        return new okhttp3.Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callback.onFailure(call, e);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Json<T> json = parse(response, type);
+                if (json.code == CodeMessage.OK) {
+                    callback.onResponse(call, json.data);
+                } else {
+                    callback.onFailure(call, new ServiceException(json.code, json.message));
+                }
+            }
+        };
     }
 }
