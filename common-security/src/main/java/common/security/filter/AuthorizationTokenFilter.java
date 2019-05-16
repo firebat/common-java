@@ -1,7 +1,7 @@
 package common.security.filter;
 
-import common.security.AuthService;
-import common.security.config.SecurityConfig;
+import common.security.AuthorizationService;
+import common.security.config.AuthorizationConfig;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,27 +17,27 @@ import java.io.IOException;
 
 public class AuthorizationTokenFilter extends OncePerRequestFilter {
 
-    private SecurityConfig config;
+    private AuthorizationConfig authorizationConfig;
 
     private UserDetailsService userDetailsService;
 
-    private AuthService authService;
+    private AuthorizationService authService;
 
-    public AuthorizationTokenFilter(SecurityConfig config, UserDetailsService userDetailsService, AuthService authService) {
-        this.config = config;
+    public AuthorizationTokenFilter(AuthorizationConfig authorizationConfig, UserDetailsService userDetailsService, AuthorizationService authorizationService) {
+        this.authorizationConfig = authorizationConfig;
         this.userDetailsService = userDetailsService;
-        this.authService = authService;
+        this.authService = authorizationService;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        String authorization = request.getHeader(config.getTokenHeader());
+        String authorization = request.getHeader(authorizationConfig.getTokenHeader());
 
-        if (authorization != null && authorization.startsWith(config.getTokenHead())) {
+        if (authorization != null && authorization.startsWith(authorizationConfig.getTokenHead())) {
 
             // https://tools.ietf.org/html/rfc6750
-            final String token = authorization.substring(config.getTokenHead().length());
+            final String token = authorization.substring(authorizationConfig.getTokenHead().length());
             final String username = authService.parseUsername(token);
 
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -53,7 +53,6 @@ public class AuthorizationTokenFilter extends OncePerRequestFilter {
                     }
                 }
             }
-
         }
 
         filterChain.doFilter(request, response);
