@@ -1,5 +1,6 @@
 package common.web.autoconfigure;
 
+import common.autoconfigure.CommonProperties;
 import common.web.spring.handler.JsonBodyExceptionResolver;
 import common.web.spring.handler.JsonBodyMethodProcessor;
 import org.springframework.context.annotation.Bean;

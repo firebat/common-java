@@ -1,0 +1,27 @@
+spring:
+  appliction:
+    name: common-web-test
+
+  profiles:
+    active: test
+
+  main:
+    banner-mode: "off"
+
+logging:
+  level:
+    org.springframework.test: WARN
+
+common:
+  monitor:
+    url: '/monitor.html'
+  server:
+    health-check:
+      url: '/check.html'
+      file: '/home/ec2-user/common-web/check.html'
+    data-center-id: 2
+    machine-id: 3
+---
+spring:
+  profiles: test
+

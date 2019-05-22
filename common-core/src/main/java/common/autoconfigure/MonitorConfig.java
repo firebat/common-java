@@ -21,8 +21,4 @@ public class MonitorConfig {
     public InfluxDBConfig getInflux() {
         return influx;
     }
-
-    public void setInflux(InfluxDBConfig influx) {
-        this.influx = influx;
-    }
 }

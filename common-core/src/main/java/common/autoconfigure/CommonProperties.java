@@ -16,15 +16,7 @@ public class CommonProperties {
         return monitor;
     }
 
-    public void setMonitor(MonitorConfig monitor) {
-        this.monitor = monitor;
-    }
-
     public ServerConfig getServer() {
         return server;
-    }
-
-    public void setServer(ServerConfig server) {
-        this.server = server;
     }
 }

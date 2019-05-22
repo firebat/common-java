@@ -29,8 +29,4 @@ public class ServerConfig {
     public HealthCheckConfig getHealthCheck() {
         return healthCheck;
     }
-
-    public void setHealthCheck(HealthCheckConfig healthCheck) {
-        this.healthCheck = healthCheck;
-    }
 }

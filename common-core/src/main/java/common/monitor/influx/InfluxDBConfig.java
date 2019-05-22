@@ -65,15 +65,7 @@ public class InfluxDBConfig extends ClientConfig {
         return tags;
     }
 
-    public void setTags(Map<String, String> tags) {
-        this.tags = tags;
-    }
-
     public ProxyConfig getProxy() {
         return proxy;
-    }
-
-    public void setProxy(ProxyConfig proxy) {
-        this.proxy = proxy;
     }
 }
