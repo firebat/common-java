@@ -1,16 +1,20 @@
 package common.management;
 
 import com.google.common.base.Strings;
-import common.autoconfigure.CommonProperties;
-import common.management.health.FileHealthChecker;
+import common.autoconfigure.HealthConfig;
+import common.autoconfigure.ServerConfig;
+import common.health.FileHealthChecker;
 import org.springframework.context.SmartLifecycle;
 
 public class ServerLifecycle implements SmartLifecycle {
 
     private boolean running = false;
 
-    public ServerLifecycle(ServerManager manager, CommonProperties commonProperties) {
-        String healthCheckFile = commonProperties.getServer().getHealthCheck().getFile();
+    public ServerLifecycle(final ServerManager manager,
+                           final ServerConfig serverConfig,
+                           final HealthConfig healthConfig) {
+
+        String healthCheckFile = healthConfig.getFile();
         if (!Strings.isNullOrEmpty(healthCheckFile)) {
             manager.setupHealthChecker(new FileHealthChecker(healthCheckFile));
         }

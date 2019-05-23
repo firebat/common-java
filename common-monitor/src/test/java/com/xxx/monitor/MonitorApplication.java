@@ -1,14 +1,14 @@
-package com.xxx.web;
+package com.xxx.monitor;
 
-import common.web.annotation.EnableJsonBody;
+import common.monitor.annotation.EnableMonitor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@EnableJsonBody
-public class WebApplication {
+@EnableMonitor
+public class MonitorApplication {
+
     public static void main(String[] args) {
-        SpringApplication.run(WebApplication.class, args);
+        SpringApplication.run(MonitorApplication.class, args);
     }
 }
-

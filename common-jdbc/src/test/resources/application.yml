@@ -1,6 +1,6 @@
 spring:
   appliction:
-    name: common-web-test
+    name: common-jdbc-test
 
   profiles:
     active: test
@@ -11,6 +11,7 @@ spring:
 logging:
   level:
     org.springframework.test: WARN
+
 ---
 spring:
   profiles: test

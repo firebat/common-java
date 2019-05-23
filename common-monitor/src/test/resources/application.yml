@@ -1,6 +1,6 @@
 spring:
   appliction:
-    name: common-web-test
+    name: common-monitor-test
 
   profiles:
     active: test
@@ -11,6 +11,10 @@ spring:
 logging:
   level:
     org.springframework.test: WARN
+
+common:
+  monitor:
+    url: '/monitor.html'
 ---
 spring:
   profiles: test

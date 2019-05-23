@@ -1,14 +1,14 @@
-package com.xxx.web;
+package com.xxx.jdbc;
 
-import common.web.annotation.EnableJsonBody;
+import common.jdbc.annotation.EnableShard;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@EnableJsonBody
-public class WebApplication {
+@EnableShard
+public class JdbcApplication {
+
     public static void main(String[] args) {
-        SpringApplication.run(WebApplication.class, args);
+        SpringApplication.run(JdbcApplication.class, args);
     }
 }
-

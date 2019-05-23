@@ -1,12 +1,11 @@
 package common.autoconfigure;
 
-import org.springframework.boot.context.properties.NestedConfigurationProperty;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
+@ConfigurationProperties("common.server")
 public class ServerConfig {
 
-    @NestedConfigurationProperty
-    private HealthCheckConfig healthCheck = new HealthCheckConfig();
-
+    private String env = "/system/env.html";
     private long dataCenterId = 1;
     private long machineId = 1;
 
@@ -26,7 +25,11 @@ public class ServerConfig {
         this.machineId = machineId;
     }
 
-    public HealthCheckConfig getHealthCheck() {
-        return healthCheck;
+    public String getEnv() {
+        return env;
+    }
+
+    public void setEnv(String env) {
+        this.env = env;
     }
 }

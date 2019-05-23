@@ -4,7 +4,7 @@ import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import common.concurrent.ManagedExecutors;
 import common.concurrent.NamedRunnable;
-import common.management.health.HealthChecker;
+import common.health.HealthChecker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

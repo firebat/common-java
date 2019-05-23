@@ -11,9 +11,9 @@
         <relativePath>..</relativePath>
     </parent>
 
-    <artifactId>common-core</artifactId>
+    <artifactId>common-monitor</artifactId>
     <name>${project.artifactId}</name>
-    <description>核心服务</description>
+    <description>监控组件</description>
 
     <dependencies>
         <dependency>
@@ -27,9 +27,26 @@
         </dependency>
 
         <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-autoconfigure</artifactId>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.influxdb</groupId>
+            <artifactId>influxdb-java</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

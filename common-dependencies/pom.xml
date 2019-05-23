@@ -47,6 +47,11 @@
             </dependency>
             <dependency>
                 <groupId>common</groupId>
+                <artifactId>common-monitor</artifactId>
+                <version>${common.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>common</groupId>
                 <artifactId>common-rpc</artifactId>
                 <version>${common.version}</version>
             </dependency>

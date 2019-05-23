@@ -1,4 +1,9 @@
-### Configuration
+## 多数据源
+在应用入口类增加注解启用Shard功能
+
+    @EnableShard
+
+### 配置数据源
 
     // Configure ShardDataSource instance
     @Bean("dataSource")
@@ -14,18 +19,14 @@
 
         return dataSource;
     }
-    
-    // Create @ShardKey aspect handler
-    @Bean
-    public ShardKeyAspect shardKeyAspect() {
-        return new ShardKeyAspect();
-    }
 
-### Usage
+
+### 标记
+确认使用
 
     @GetMapping("order_log")
     @JsonBody
-    @ShardKey("slave")  // Use annotation
+    @ShardKey("slave")
     public Object orderLog(@RequestParam String orderNo) {
     
         // or ShardKeyStore.set("slave");

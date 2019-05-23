@@ -1,18 +1,7 @@
 ## 如何使用
-在Spring Boot启动应用时，增加扫描包 common.web
+在启动入口类上增加注解
 
-    @SpringBootApplication(scanBasePackages = {
-            "common.web",
-            ...
-    })
-
-或使用`@Import`精确选择需要引入的功能
-
-    @SpringBootApplication
-    @Import({
-            JsonBodyAutoConfiguration.class,
-            ...
-    })
+    @EnableJsonBody
 
 应用将获得以下功能
 
@@ -46,13 +35,10 @@
 
 
 ### 静态资源访问
-由于`@JsonBodyAutoConfiguration`间接继承了`@WebMvcConfigurationSupport`，使用时会禁用SpringBoot的一些自动配置，需要自己调整
+由于`@JsonBodyConfiguration`间接继承了`@WebMvcConfigurationSupport`，使用时会禁用SpringBoot的一些自动配置，需要自己调整
 
     @SpringBootApplication
-    @Import({
-            JsonBodyAutoConfiguration.class,
-            ServletAutoConfiguration.class
-    })
+    @EnableJsonBody
     public class Application implements WebMvcConfigurer {
 
         public static void main(String[] args) {

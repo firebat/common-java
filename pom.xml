@@ -15,6 +15,7 @@
         <module>common-core</module>
         <module>common-jdbc</module>
         <module>common-lang</module>
+        <module>common-monitor</module>
         <module>common-rpc</module>
         <module>common-security</module>
         <module>common-web</module>
