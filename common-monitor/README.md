@@ -58,3 +58,9 @@
             type: HTTP | SOCKS
             host:
             port:
+
+默认tags如下:
+- endpoint 取值为`${server.address:localhost}_${server.port:8080}`
+
+需附加tag时使用类似`--common.monitor.influx.tags.hostname=$HOSTNAME`方式注入
+s

@@ -8,6 +8,10 @@ spring:
   main:
     banner-mode: "off"
 
+server:
+  address: 127.0.0.1
+  port: 8001
+
 logging:
   level:
     org.springframework.test: WARN
