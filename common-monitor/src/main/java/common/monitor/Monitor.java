@@ -64,7 +64,11 @@ public class Monitor {
                 Monitor.cache = cache;
 
                 for (MonitorWriter writer : writers) {
-                    writer.write(cache);
+                    try {
+                        writer.write(cache);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }, 0, 2000);
