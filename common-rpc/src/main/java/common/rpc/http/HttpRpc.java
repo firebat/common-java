@@ -103,16 +103,16 @@ public class HttpRpc {
         return parse(execute(createRequest(config.getUrl(), uri, args).get().build()), type);
     }
 
-    public <T> T postObject(String uri, TypeReference<T> type, RequestBody requestBody) {
-        return parse(execute(createRequest(config.getUrl(), uri).post(requestBody).build()), type);
+    public <T> T postObject(String uri, TypeReference<T> type, RequestBody requestBody, String... args) {
+        return parse(execute(createRequest(config.getUrl(), uri, args).post(requestBody).build()), type);
     }
 
     public <T> T get(String uri, TypeReference<Json<T>> type, String... args) {
         return returnOrException(getObject(uri, type, args));
     }
 
-    public <T> T post(String uri, TypeReference<Json<T>> type, RequestBody requestBody) {
-        return returnOrException(postObject(uri, type, requestBody));
+    public <T> T post(String uri, TypeReference<Json<T>> type, RequestBody requestBody, String... args) {
+        return returnOrException(postObject(uri, type, requestBody, args));
     }
 
     // -------- 异步调用 ----------
@@ -120,16 +120,16 @@ public class HttpRpc {
         enqueue(createRequest(config.getUrl(), uri, args).get().build(), createObjectCallback(type, callback));
     }
 
-    public <T> void postObject(String uri, TypeReference<T> type, Callback<T> callback, RequestBody requestBody) {
-        enqueue(createRequest(config.getUrl(), uri).post(requestBody).build(), createObjectCallback(type, callback));
+    public <T> void postObject(String uri, TypeReference<T> type, Callback<T> callback, RequestBody requestBody, String... args) {
+        enqueue(createRequest(config.getUrl(), uri, args).post(requestBody).build(), createObjectCallback(type, callback));
     }
 
     public <T> void get(String uri, TypeReference<Json<T>> type, Callback<T> callback, String... args) {
         enqueue(createRequest(config.getUrl(), uri, args).get().build(), createCallback(type, callback));
     }
 
-    public <T> void post(String uri, TypeReference<Json<T>> type, Callback<T> callback, RequestBody requestBody) {
-        enqueue(createRequest(config.getUrl(), uri).post(requestBody).build(), createCallback(type, callback));
+    public <T> void post(String uri, TypeReference<Json<T>> type, Callback<T> callback, RequestBody requestBody, String... args) {
+        enqueue(createRequest(config.getUrl(), uri, args).post(requestBody).build(), createCallback(type, callback));
     }
 
     private <T> okhttp3.Callback createObjectCallback(TypeReference<T> type, Callback<T> callback) {
