@@ -1,5 +1,8 @@
 package common.concurrent;
 
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
+
 import java.util.concurrent.*;
 
 /**
@@ -10,15 +13,18 @@ public class ManagedExecutors {
     private ManagedExecutors() {
     }
 
-    private static final ThreadPoolExecutor executorService = (ThreadPoolExecutor) newCachedThreadPool("shared-pool");
-    private static final ScheduledThreadPoolExecutor scheduledExecutorService = (ScheduledThreadPoolExecutor) newScheduledThreadPool(10, "shared-sched-pool");
+    private static final Supplier<ThreadPoolExecutor> executorSupplier =
+            Suppliers.memoize(() -> (ThreadPoolExecutor) newCachedThreadPool("shared-pool"));
+
+    private static final Supplier<ScheduledThreadPoolExecutor> scheduledExecutorSupplier =
+            Suppliers.memoize(() -> (ScheduledThreadPoolExecutor) newScheduledThreadPool(10, "shared-sched-pool"));
 
     public static ExecutorService getExecutor() {
-        return executorService;
+        return executorSupplier.get();
     }
 
     public static ScheduledExecutorService getScheduledExecutor() {
-        return scheduledExecutorService;
+        return scheduledExecutorSupplier.get();
     }
 
     public static ExecutorService newFixedThreadPool(int nThreads) {
