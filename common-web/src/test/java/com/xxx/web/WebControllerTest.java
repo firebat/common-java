@@ -21,9 +21,31 @@ public class WebControllerTest {
     @Resource
     private TestRestTemplate testRestTemplate;
 
+    private String api(String uri) {
+        return "http://localhost:" + port + "/api" + uri;
+    }
+
+    @Test
+    public void testRest() {
+        String data = this.testRestTemplate.getForObject(api("/rest"), String.class);
+        assertEquals("{\"name\":\"alice\"}", data);
+    }
+
     @Test
     public void testHello() {
-        String data = this.testRestTemplate.getForObject("http://localhost:" + port + "/api/hello?name=alice", String.class);
+        String data = this.testRestTemplate.getForObject(api("/hello?name=alice"), String.class);
         assertEquals("{\"code\":0,\"message\":null,\"data\":\"alice\"}", data);
+    }
+
+    @Test
+    public void testException() {
+        String data = this.testRestTemplate.getForObject(api("/exception"), String.class);
+        assertEquals("{\"code\":-1,\"message\":\"Oops\",\"data\":null}", data);
+    }
+
+    @Test
+    public void testMappedException() {
+        String data = this.testRestTemplate.getForObject(api("/mapped"), String.class);
+        assertEquals("{\"code\":-1,\"message\":\"SQL异常\",\"data\":null}", data);
     }
 }

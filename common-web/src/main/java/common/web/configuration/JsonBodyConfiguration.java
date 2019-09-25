@@ -2,6 +2,7 @@ package common.web.configuration;
 
 import common.web.spring.handler.JsonBodyExceptionResolver;
 import common.web.spring.handler.JsonBodyMethodProcessor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
@@ -42,6 +43,7 @@ public class JsonBodyConfiguration extends DelegatingWebMvcConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public JsonBodyExceptionResolver jsonBodyExceptionResolver() {
         return new JsonBodyExceptionResolver();
     }

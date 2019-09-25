@@ -22,6 +22,7 @@ public class JsonBodyMethodProcessor implements HandlerMethodReturnValueHandler 
         HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
         HttpServletResponse response = webRequest.getNativeResponse(HttpServletResponse.class);
 
-        JsonSerializer.write(returnValue, returnType.getMethod(), request, response);
+        JsonBody meta = returnType.getMethod().getAnnotation(JsonBody.class);
+        JsonSerializer.write(returnValue, meta, request, response);
     }
 }

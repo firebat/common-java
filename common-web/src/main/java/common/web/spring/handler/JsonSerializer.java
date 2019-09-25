@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Writer;
-import java.lang.reflect.Method;
 
 import static common.api.json.CodeMessage.ERROR;
 import static common.api.json.CodeMessage.OK;
@@ -27,15 +26,14 @@ final class JsonSerializer {
         mapper.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
     }
 
-    static void write(Object value, Method method, HttpServletRequest request, HttpServletResponse response) {
+    static void write(Object value, JsonBody meta, HttpServletRequest request, HttpServletResponse response) {
 
-        JsonBody meta = method.getAnnotation(JsonBody.class);
         logger.debug("value={}, meta={}", value, meta);
 
         String callback = Strings.emptyToNull(request.getParameter(meta.callback()));
 
         try {
-            Object data = dataOf(meta, value);
+            Object data = dataOf(value);
 
             if (callback != null) {
                 response.setContentType("application/javascript; charset=UTF-8");
@@ -54,7 +52,7 @@ final class JsonSerializer {
         }
     }
 
-    private static Object dataOf(JsonBody meta, Object value) {
+    private static Object dataOf(Object value) {
 
         if (value instanceof Json) {
             return value;
@@ -67,11 +65,6 @@ final class JsonSerializer {
 
         if (value instanceof Throwable) {
             final Throwable e = (Throwable) value;
-
-            if (meta.logException()) {
-                logger.error(e.getMessage(), e);
-            }
-
             return new Json<>(ERROR, e.getMessage(), null);
         }
 
