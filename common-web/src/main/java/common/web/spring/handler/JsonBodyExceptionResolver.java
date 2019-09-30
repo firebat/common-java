@@ -14,9 +14,14 @@ import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.Map;
 
+/**
+ * JsonBody异常处理
+ */
 public class JsonBodyExceptionResolver extends AbstractHandlerExceptionResolver {
 
     private Map<Class<? extends Exception>, CodeMessage> exceptionMapping = Collections.emptyMap();
+
+    private boolean logException = true;
 
     public JsonBodyExceptionResolver() {
         this.setOrder(Ordered.HIGHEST_PRECEDENCE);
@@ -39,7 +44,7 @@ public class JsonBodyExceptionResolver extends AbstractHandlerExceptionResolver 
             return null;
         }
 
-        if (meta.logException()) {
+        if (logException) {
             logger.error(exception.getMessage(), exception);
         }
 
@@ -62,5 +67,9 @@ public class JsonBodyExceptionResolver extends AbstractHandlerExceptionResolver 
 
     public void setExceptionMapping(Map<Class<? extends Exception>, CodeMessage> exceptionMapping) {
         this.exceptionMapping = exceptionMapping;
+    }
+
+    public void setLogException(boolean logException) {
+        this.logException = logException;
     }
 }

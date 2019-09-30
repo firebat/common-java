@@ -34,18 +34,18 @@ public class WebControllerTest {
     @Test
     public void testHello() {
         String data = this.testRestTemplate.getForObject(api("/hello?name=alice"), String.class);
-        assertEquals("{\"code\":0,\"message\":null,\"data\":\"alice\"}", data);
+        assertEquals("{\"code\":0,\"data\":\"alice\",\"message\":null}", data);
     }
 
     @Test
     public void testException() {
         String data = this.testRestTemplate.getForObject(api("/exception"), String.class);
-        assertEquals("{\"code\":-1,\"message\":\"Oops\",\"data\":null}", data);
+        assertEquals("{\"code\":-1,\"data\":null,\"message\":\"Oops\"}", data);
     }
 
     @Test
     public void testMappedException() {
         String data = this.testRestTemplate.getForObject(api("/mapped"), String.class);
-        assertEquals("{\"code\":-1,\"message\":\"SQL异常\",\"data\":null}", data);
+        assertEquals("{\"code\":-1,\"data\":null,\"message\":\"SQL异常\"}", data);
     }
 }

@@ -5,6 +5,7 @@ import common.web.spring.handler.JsonBodyMethodProcessor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.ReflectionUtils;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.servlet.config.annotation.DelegatingWebMvcConfiguration;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
@@ -23,23 +24,15 @@ public class JsonBodyConfiguration extends DelegatingWebMvcConfiguration {
     public RequestMappingHandlerAdapter requestMappingHandlerAdapter() {
 
         RequestMappingHandlerAdapter adapter = super.requestMappingHandlerAdapter();
+
         // JsonBodyMethodProcessor at first
-        List<HandlerMethodReturnValueHandler> returnValueHandlers = getDefault(adapter, "getDefaultReturnValueHandlers");
+        Method method = ReflectionUtils.findMethod(RequestMappingHandlerAdapter.class, "getDefaultReturnValueHandlers");
+        ReflectionUtils.makeAccessible(method);
+        List<HandlerMethodReturnValueHandler> returnValueHandlers = (List<HandlerMethodReturnValueHandler>) ReflectionUtils.invokeMethod(method, adapter);
         returnValueHandlers.add(0, new JsonBodyMethodProcessor());
         adapter.setReturnValueHandlers(returnValueHandlers);
 
         return adapter;
-    }
-
-    @SuppressWarnings("unchecked")
-    private <T> List<T> getDefault(RequestMappingHandlerAdapter adapter, String methodName) {
-        try {
-            Method method = RequestMappingHandlerAdapter.class.getDeclaredMethod(methodName);
-            method.setAccessible(true);
-            return (List<T>) method.invoke(adapter);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Bean

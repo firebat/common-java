@@ -1,8 +1,6 @@
 package com.xxx.web;
 
 import com.google.common.collect.ImmutableMap;
-import common.api.json.CodeMessage;
-import common.api.json.Json;
 import common.exception.ServiceException;
 import common.web.annotation.EnableJsonBody;
 import common.web.spring.handler.JsonBodyExceptionResolver;
@@ -22,6 +20,7 @@ public class WebApplication {
         resolver.setExceptionMapping(ImmutableMap.of(
                 SQLException.class, new ServiceException(-1, "SQL异常"))
         );
+        resolver.setLogException(false);
         return resolver;
     }
 

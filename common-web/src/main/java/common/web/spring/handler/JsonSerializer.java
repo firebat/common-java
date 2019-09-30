@@ -54,13 +54,8 @@ final class JsonSerializer {
 
     private static Object dataOf(Object value) {
 
-        if (value instanceof Json) {
-            return value;
-        }
-
         if (value instanceof CodeMessage) {
-            final CodeMessage cm = (CodeMessage) value;
-            return new Json<>(cm.getCode(), cm.getMessage(), cm.getData());
+            return value;
         }
 
         if (value instanceof Throwable) {
@@ -69,5 +64,9 @@ final class JsonSerializer {
         }
 
         return new Json<>(OK, null, value);
+    }
+
+    static ObjectMapper getMapper() {
+        return mapper;
     }
 }

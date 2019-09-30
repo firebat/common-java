@@ -26,7 +26,7 @@ public class WebController {
     }
 
     @RequestMapping("/exception")
-    @JsonBody(logException = false)
+    @JsonBody
     public Object exception() {
         throw new IllegalArgumentException("Oops");
     }
