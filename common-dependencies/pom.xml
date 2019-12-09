@@ -18,7 +18,7 @@
         <org.slf4j.version>1.7.25</org.slf4j.version>
         <aspectjweaver.version>1.9.2</aspectjweaver.version>
         <libphonenumber.version>8.10.1</libphonenumber.version>
-        <com.fasterxml.jackson.version>2.9.9.3</com.fasterxml.jackson.version>
+        <com.fasterxml.jackson.version>2.9.10.1</com.fasterxml.jackson.version>
         <junit.version>4.12</junit.version>
         <common.version>${project.version}</common.version>
     </properties>
